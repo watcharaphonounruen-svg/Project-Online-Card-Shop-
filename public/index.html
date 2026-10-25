@@ -1,0 +1,573 @@
+
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Card Haven | ร้านการ์ดสะสม</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/shop.css">
+</head>
+
+<body>
+
+    <header class="shop-header">
+
+        <a class="brand" href="#home">
+            <span class="brand-mark">✦</span>
+            <span>
+                CARD <b>HAVEN</b>
+                <small>TRADING CARD STORE</small>
+            </span>
+        </a>
+
+        <nav>
+            <a href="#home">หน้าร้าน</a>
+            <a href="#products">การ์ดทั้งหมด</a>
+            <a href="#orders" id="ordersLink" hidden>คำสั่งซื้อ</a>
+            <a href="#admin" id="adminLink" hidden>จัดการร้าน</a>
+        </nav>
+
+        <div class="header-actions">
+            <span id="userLabel">ยินดีต้อนรับ</span>
+
+            <button class="btn btn-outline" id="loginOpen">
+                เข้าสู่ระบบ
+            </button>
+
+            <button class="btn btn-primary" id="cartOpen">
+                ตะกร้า <span id="cartCount">0</span>
+            </button>
+
+            <button class="btn btn-outline" id="logoutBtn" hidden>
+                ออกจากระบบ
+            </button>
+        </div>
+
+    </header>
+
+    <main id="home">
+
+        <section class="hero-shop">
+
+            <div class="hero-copy">
+                <p class="eyebrow">YOUR NEXT RARE FIND</p>
+
+                <h1>
+                    ค้นพบการ์ดใบโปรด<br>
+                    <span>เริ่มต้นที่นี่</span>
+                </h1>
+
+                <p>
+                    รวมการ์ดสะสมสุดพิเศษสำหรับนักสะสมทุกระดับ
+                    เลือกใบที่ใช่ เติมเต็มคอลเลกชันของคุณ
+                </p>
+
+                <a class="btn btn-primary" href="#products">
+                    เลือกชมการ์ด <span>↗</span>
+                </a>
+
+                <div class="hero-stats">
+                    <div>
+                        <b>COLLECT</b>
+                        <small>สะสมสิ่งที่รัก</small>
+                    </div>
+
+                    <div>
+                        <b>TRADE</b>
+                        <small>แลกเปลี่ยนความชอบ</small>
+                    </div>
+
+                    <div>
+                        <b>REPEAT</b>
+                        <small>ค้นพบใบใหม่เสมอ</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-art">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+
+                <div class="hero-card">
+                    <div class="hero-card-top">
+                        RARE COLLECTION <span>✦</span>
+                    </div>
+
+                    <div class="hero-symbol">✧</div>
+
+                    <div class="hero-card-bottom">
+                        <small>LIMITED EDITION</small>
+                        <b>THE COLLECTOR</b>
+                    </div>
+                </div>
+
+                <div class="floating-tag">
+                    ✦ FIND YOUR<br>
+                    NEXT FAVORITE
+                </div>
+            </div>
+
+        </section>
+
+        <section class="shop-section" id="products">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">THE COLLECTION</p>
+                    <h2>การ์ดที่น่าสะสม</h2>
+                    <p>ค้นหาการ์ดที่เข้ากับสไตล์ของคุณ</p>
+                </div>
+
+                <div class="search-tools">
+                    <input
+                        id="searchInput"
+                        placeholder="ค้นหาชื่อการ์ด..."
+                        aria-label="ค้นหาการ์ด"
+                    >
+
+                    <select id="categoryFilter">
+                        <option value="">ทุกประเภท</option>
+                    </select>
+
+                    <button class="btn btn-primary" id="searchBtn">
+                        ค้นหา
+                    </button>
+                </div>
+            </div>
+
+            <div id="notice" role="status"></div>
+
+            <div class="product-grid" id="productGrid">
+                <p>กำลังโหลดสินค้า...</p>
+            </div>
+
+        </section>
+
+        <section
+            class="shop-section account-section"
+            id="orders"
+            hidden
+        >
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">YOUR COLLECTION JOURNEY</p>
+                    <h2>คำสั่งซื้อของฉัน</h2>
+                </div>
+
+                <button class="btn btn-outline" id="reloadOrders">
+                    รีเฟรช
+                </button>
+            </div>
+
+            <div id="ordersList"></div>
+        </section>
+
+        <section
+            class="shop-section admin-section"
+            id="admin"
+            hidden
+        >
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">CONTROL ROOM</p>
+                    <h2>จัดการร้านค้า</h2>
+                    <p>สำหรับผู้ดูแลระบบเท่านั้น</p>
+                </div>
+
+                <button class="btn btn-outline" id="reloadAdmin">
+                    รีเฟรชข้อมูล
+                </button>
+            </div>
+
+            <div class="admin-stats" id="adminStats"></div>
+
+            <div class="admin-columns">
+
+                <form id="addCardForm" class="admin-form">
+                    <h3>เพิ่มการ์ดใหม่</h3>
+
+                    <label>
+                        ชื่อการ์ด
+                        <input name="name" required>
+                    </label>
+
+                    <label>
+                        ประเภทการ์ด
+                        <select name="category" required>
+                            <option value="Pokémon">Pokémon</option>
+                            <option value="Cardfight Vanguard">
+                                Cardfight Vanguard
+                            </option>
+                            <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        รายละเอียด
+                        <textarea name="description" rows="3"></textarea>
+                    </label>
+
+                    <label>
+                        รูปภาพสินค้า
+
+                        <input
+                            name="image_file"
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp,image/gif"
+                        >
+
+                        <small>
+                            เลือกรูปจากคอมพิวเตอร์ได้เลย (ไม่เกิน 5 MB)
+                        </small>
+
+                        <img
+                            id="addImagePreview"
+                            class="upload-preview"
+                            alt="ตัวอย่างรูปสินค้า"
+                            hidden
+                        >
+                    </label>
+
+                    <div class="form-pair">
+                        <label>
+                            ราคา (บาท)
+                            <input
+                                name="price"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+                        </label>
+
+                        <label>
+                            จำนวนคงเหลือ
+                            <input
+                                name="stock"
+                                type="number"
+                                min="0"
+                                required
+                            >
+                        </label>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">
+                        + เพิ่มสินค้า
+                    </button>
+                </form>
+
+                <div>
+                    <h3>สินค้าในร้าน</h3>
+                    <div id="adminCards"></div>
+
+                    <h3>คำสั่งซื้อล่าสุด</h3>
+                    <div id="adminOrders"></div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="shop-footer">
+        <a class="brand" href="#home">
+            ✦ CARD <b>HAVEN</b>
+        </a>
+
+        <p>พื้นที่สำหรับนักสะสมที่หลงใหลในการ์ดทุกใบ</p>
+
+        <small>© 2026 Card Haven</small>
+    </footer>
+
+    <div class="modal-backdrop" id="authModal" hidden>
+        <section class="modal">
+            <button class="modal-close" data-close="authModal">×</button>
+
+            <p class="eyebrow">WELCOME TO CARD HAVEN</p>
+            <h2 id="authTitle">เข้าสู่ระบบ</h2>
+
+            <div class="auth-tabs">
+                <button class="active" id="showLogin">
+                    เข้าสู่ระบบ
+                </button>
+
+                <button id="showRegister">
+                    สมัครสมาชิก
+                </button>
+            </div>
+
+            <form id="authForm">
+                <label id="nameField" hidden>
+                    ชื่อที่แสดง
+                    <input name="name" autocomplete="name">
+                </label>
+
+                <label>
+                    อีเมล
+                    <input
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        required
+                    >
+                </label>
+
+                <label>
+                    รหัสผ่าน
+                    <input
+                        name="password"
+                        type="password"
+                        minlength="6"
+                        autocomplete="current-password"
+                        required
+                    >
+                </label>
+
+                <button
+                    class="btn btn-primary full-width"
+                    type="submit"
+                    id="authSubmit"
+                >
+                    เข้าสู่ระบบ
+                </button>
+            </form>
+
+            <p class="fine-print">
+                รหัสผ่านถูกเข้ารหัสก่อนจัดเก็บในฐานข้อมูล
+            </p>
+        </section>
+    </div>
+
+    <div class="modal-backdrop" id="cartModal" hidden>
+        <section class="modal cart-modal">
+            <button class="modal-close" data-close="cartModal">×</button>
+
+            <p class="eyebrow">YOUR PICKS</p>
+            <h2>ตะกร้าสินค้า</h2>
+
+            <div id="cartItems"></div>
+
+            <div class="cart-total">
+                <span>ยอดรวม</span>
+                <strong id="cartTotal">฿0</strong>
+            </div>
+
+            <button
+                class="btn btn-primary full-width"
+                id="checkoutBtn"
+            >
+                ยืนยันคำสั่งซื้อ
+            </button>
+
+        </section>
+    </div>
+
+    <div class="modal-backdrop" id="cardDetailModal" hidden>
+        <section class="modal card-detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailCardName">
+            <button class="modal-close" type="button" data-close="cardDetailModal" aria-label="ปิด">×</button>
+            <div class="detail-card-layout">
+                <div class="detail-card-image-wrap">
+                    <img id="detailCardImage" class="detail-card-image" alt="รูปการ์ด">
+                </div>
+                <div class="detail-card-info">
+                    <span id="detailCardCategory" class="detail-card-category"></span>
+                    <h2 id="detailCardName"></h2>
+                    <p id="detailCardDescription" class="detail-card-description"></p>
+                    <div class="detail-card-price" id="detailCardPrice">฿0</div>
+                    <div class="detail-card-stock" id="detailCardStock">คงเหลือ 0 ใบ</div>
+                    <button class="btn btn-primary full-width" id="detailAddBtn">+ ใส่ตะกร้า</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal-backdrop" id="checkoutModal" hidden>
+        <section class="modal checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+            <button class="modal-close" type="button" data-close="checkoutModal" aria-label="ปิด">×</button>
+            <div class="checkout-head">
+                <div class="checkout-icon">🛒</div>
+                <div>
+                    <p class="eyebrow">ORDER REVIEW</p>
+                    <h2 id="checkoutTitle">ตรวจสอบคำสั่งซื้อ</h2>
+                    <p class="modal-intro">ตรวจสอบรายการให้เรียบร้อย แล้วไปชำระเงิน</p>
+                </div>
+            </div>
+            <div id="checkoutItems" class="checkout-items"></div>
+            <div class="checkout-total-row">
+                <span>ยอดที่ต้องชำระ</span>
+                <strong id="checkoutTotal">฿0</strong>
+            </div>
+            <div class="checkout-actions">
+                <button class="btn btn-outline" type="button" data-close="checkoutModal">กลับไปแก้ไข</button>
+                <button class="btn btn-primary" type="button" id="checkoutConfirmBtn">ไปชำระเงิน →</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal-backdrop" id="paymentModal" hidden>
+        <section class="modal payment-modal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+            <button class="modal-close" type="button" data-close="paymentModal" aria-label="ปิด">×</button>
+            <div class="payment-head">
+                <div class="payment-icon">฿</div>
+                <div>
+                    <p class="eyebrow">PAYMENT</p>
+                    <h2 id="paymentTitle">ชำระเงิน</h2>
+                    <p class="modal-intro">สแกน QR ด้านล่างเพื่อชำระเงิน</p>
+                </div>
+            </div>
+
+            <div class="payment-box">
+                <div class="qr-frame">
+                    <div id="fakeQr" class="fake-qr" aria-label="QR สำหรับการชำระเงิน"></div>
+                    <span class="qr-demo-badge">QR</span>
+                </div>
+                <div class="payment-details">
+                    <span>ร้านค้า</span>
+                    <strong>CARD HAVEN</strong>
+                    <span>ยอดชำระ</span>
+                    <strong id="paymentTotal" class="payment-total">฿0</strong>
+                    <span>เลขอ้างอิง</span>
+                    <strong id="paymentReference">DEMO-000000</strong>
+                </div>
+            </div>
+
+            <div class="checkout-actions">
+                <button class="btn btn-outline" type="button" data-close="paymentModal">ยกเลิก</button>
+                <button class="btn btn-primary" type="button" id="paymentConfirmBtn">✓ ฉันชำระเงินแล้ว</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <div class="modal-backdrop" id="editCardModal" hidden>
+        <section
+            class="modal edit-card-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="editCardTitle"
+        >
+            <button
+                class="modal-close"
+                type="button"
+                data-close="editCardModal"
+                aria-label="ปิด"
+            >
+                ×
+            </button>
+
+            <p class="eyebrow">PRODUCT MANAGEMENT</p>
+            <h2 id="editCardTitle">แก้ไขข้อมูลการ์ด</h2>
+
+            <p class="modal-intro">
+                แก้ไขรายละเอียดสินค้า แล้วกดบันทึกเพื่ออัปเดตข้อมูลในร้าน
+            </p>
+
+            <form id="editCardForm">
+                <input type="hidden" name="id">
+
+                <label>
+                    ชื่อการ์ด
+                    <input
+                        name="name"
+                        required
+                        maxlength="150"
+                        placeholder="ชื่อการ์ด"
+                    >
+                </label>
+
+                <label>
+                    ประเภทการ์ด
+                    <select name="category" required>
+                        <option value="Pokémon">Pokémon</option>
+                        <option value="Cardfight Vanguard">
+                            Cardfight Vanguard
+                        </option>
+                        <option value="Yu-Gi-Oh!">Yu-Gi-Oh!</option>
+                    </select>
+                </label>
+
+                <label>
+                    รายละเอียด
+                    <textarea
+                        name="description"
+                        rows="3"
+                        placeholder="รายละเอียดการ์ด"
+                    ></textarea>
+                </label>
+
+                <label>
+                    เปลี่ยนรูปภาพสินค้า
+
+                    <input
+                        name="image_file"
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp,image/gif"
+                    >
+
+                    <small>ไม่เลือกรูปใหม่จะใช้รูปเดิม</small>
+
+                    <img
+                        id="editImagePreview"
+                        class="upload-preview"
+                        alt="ตัวอย่างรูปสินค้า"
+                        hidden
+                    >
+                </label>
+
+                <div class="form-pair">
+                    <label>
+                        ราคา (บาท)
+                        <input
+                            name="price"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+                    </label>
+
+                    <label>
+                        จำนวนคงเหลือ
+                        <input
+                            name="stock"
+                            type="number"
+                            min="0"
+                            step="1"
+                            required
+                        >
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        class="btn btn-outline"
+                        type="button"
+                        data-close="editCardModal"
+                    >
+                        ยกเลิก
+                    </button>
+
+                    <button class="btn btn-primary" type="submit">
+                        บันทึกการเปลี่ยนแปลง
+                    </button>
+                </div>
+
+                <p
+                    id="editCardError"
+                    class="form-message"
+                    role="status"
+                ></p>
+            </form>
+        </section>
+    </div>
+
+    <script src="/js/main.js" defer></script>
+
+</body>
+</html>
+
